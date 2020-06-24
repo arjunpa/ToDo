@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ToDoCreateViewController: UIViewController {
+class ToDoCreateViewController: DismissOnTapViewController {
 
     var viewModel: ToDoCreateViewModelInterface?
     
@@ -17,20 +17,9 @@ class ToDoCreateViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.setup()
-    }
-    
-    private func setup() {
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(resignKeyboard))
-        self.view.addGestureRecognizer(tapGesture)
-    }
-    
-    @objc private func resignKeyboard() {
-        self.view.endEditing(true)
     }
     
     @IBAction private func cancel() {
-        self.resignKeyboard()
         self.dismiss(animated: true, completion: nil)
     }
     
@@ -50,7 +39,7 @@ class ToDoCreateViewController: UIViewController {
             }
         }
         
-        self.viewModel?.addItem(ToDoViewModel(title: self.titleTextField.text, description: self.descriptionTextView.text),
+        self.viewModel?.addItem(ToDoItem(title: self.titleTextField.text, description: self.descriptionTextView.text),
                                 completion: { [weak self] result in
             guard self != nil else { return }
             handleResult(result: result)

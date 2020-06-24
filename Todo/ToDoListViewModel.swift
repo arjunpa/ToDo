@@ -12,7 +12,8 @@ import CoreData
 protocol ToDoListViewInterface {
     var numberOfItems: Int { get }
     func item(at index: Int) -> ToDoViewModel?
-    func fetch()
+    func fetch(with queryString: String?)
+    func updateSelection(_ selection: Bool, at index: Int)
 }
 
 protocol ToDoListViewDelegate: class {
@@ -41,29 +42,54 @@ extension ToDoListViewModel: ToDoListViewInterface {
     
     func item(at index: Int) -> ToDoViewModel? {
         guard let toDoManagedObject = self.fetchResultsController?.object(at: IndexPath(row: index, section: 0)) else { return nil }
-        return ToDoViewModel(title: toDoManagedObject.toDoTitle, description: toDoManagedObject.toDoDescription)
+        return ToDoViewModel(title: toDoManagedObject.toDoTitle,
+                             description: toDoManagedObject.toDoDescription,
+                             uuid: toDoManagedObject.uuid,
+                             completed: toDoManagedObject.completed)
     }
     
-    func fetch() {
+    func fetch(with queryString: String?) {
         self.repository.onReady = { [weak self] readyState in
             switch readyState {
             case .ready:
-                self?.configureFetchController()
+                self?.configureFetchController(with: self?.predicate(with: queryString))
                 try? self?.fetchResultsController?.performFetch()
+                self?.viewDelegate?.updateView()
             case .failure:
                 self?.viewDelegate?.displayError(error: DisplayError.general)
             }
         }
     }
     
-    private func configureFetchController() {
-        let fetchRequest: NSFetchRequest<ToDo> = ToDo.fetchRequest()
-        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "dateTime", ascending: false)]
-        self.fetchResultsController = NSFetchedResultsController(fetchRequest: fetchRequest,
-                                                                 managedObjectContext: repository.contextStore.viewContext,
-                                                                 sectionNameKeyPath: nil,
-                                                                 cacheName: nil)
-        self.fetchResultsController?.delegate = self
+    func updateSelection(_ selection: Bool, at index: Int) {
+        guard let toDo = self.fetchResultsController?.object(at: IndexPath(row: index, section: 0)) else { return }
+        self.repository.performUpdates(with: toDo.objectID, updates: { toDoToBeUpdated in
+            toDoToBeUpdated.completed = selection
+        }) { [weak self] error in
+            self?.viewDelegate?.displayError(error: DisplayError.general)
+        }
+    }
+    
+    private func predicate(with queryString: String?) -> NSPredicate? {
+        guard let queryString = queryString?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines), !queryString.isEmpty else {
+            return nil
+        }
+        return NSPredicate(format: "toDoTitle CONTAINS[cd] %@", queryString)
+    }
+    
+    private func configureFetchController(with predicate: NSPredicate?) {
+        if self.fetchResultsController == nil {
+            let fetchRequest: NSFetchRequest<ToDo> = ToDo.fetchRequest()
+            fetchRequest.predicate = predicate
+            fetchRequest.sortDescriptors = [NSSortDescriptor(key: "dateTime", ascending: false)]
+            self.fetchResultsController = NSFetchedResultsController(fetchRequest: fetchRequest,
+                                                                     managedObjectContext: repository.contextStore.viewContext,
+                                                                     sectionNameKeyPath: nil,
+                                                                     cacheName: nil)
+            self.fetchResultsController?.delegate = self
+        } else {
+            self.fetchResultsController?.fetchRequest.predicate = predicate
+        }
     }
 }
 

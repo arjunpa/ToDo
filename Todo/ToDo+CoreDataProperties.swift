@@ -19,6 +19,7 @@ extension ToDo {
 
     @NSManaged public var toDoDescription: String?
     @NSManaged public var toDoTitle: String?
-    @NSManaged public var uuid: String?
-    @NSManaged public var dateTime: Date?
+    @NSManaged public var uuid: String
+    @NSManaged public var dateTime: Date
+    @NSManaged public var completed: Bool
 }

@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="15702" systemVersion="19B88" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="ToDo" representedClassName="ToDo" syncable="YES" codeGenerationType="class">
-        <attribute name="dateTime" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="completed" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="dateTime" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="toDoDescription" optional="YES" attributeType="String"/>
         <attribute name="toDoTitle" optional="YES" attributeType="String"/>
-        <attribute name="uuid" optional="YES" attributeType="String"/>
+        <attribute name="uuid" attributeType="String" storedInTruthFile="YES"/>
     </entity>
     <elements>
-        <element name="ToDo" positionX="-63" positionY="-18" width="128" height="103"/>
+        <element name="ToDo" positionX="-63" positionY="-18" width="128" height="118"/>
     </elements>
 </model>

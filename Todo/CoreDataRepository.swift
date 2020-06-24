@@ -83,6 +83,16 @@ extension CoreDataRepository {
         }
     }
     
+    func performUpdates(with objectID: NSManagedObjectID, updates: (T) -> (), onError: (Error) -> ()) {
+        guard let toDo = self.contextStore.backgroundContext.object(with: objectID) as? T else { return }
+        updates(toDo)
+        do {
+            try self.save()
+        } catch let error {
+            onError(error)
+        }
+    }
+    
     func save() throws {
         if self.contextStore.backgroundContext.hasChanges {
             do {

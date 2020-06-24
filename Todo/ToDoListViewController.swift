@@ -8,19 +8,15 @@
 
 import UIKit
 
-private class ToDoCell: UITableViewCell {
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: .subtitle, reuseIdentifier: reuseIdentifier)
-    }
-    
-    required init?(coder: NSCoder) {
-        super.init(coder: coder)
-    }
-}
-
-class ToDoListViewController: UIViewController {
+class ToDoListViewController: DismissOnTapViewController {
     
     var listViewModel: ToDoListViewInterface?
+    
+    @IBOutlet private weak var searchBar: UISearchBar! {
+        didSet {
+            self.searchBar.delegate = self
+        }
+    }
     
     @IBOutlet private weak var tableView: UITableView! {
         didSet {
@@ -32,7 +28,7 @@ class ToDoListViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.setupNavigationItems()
-        self.listViewModel?.fetch()
+        self.listViewModel?.fetch(with: nil)
     }
     
     private func setupNavigationItems() {
@@ -46,7 +42,7 @@ class ToDoListViewController: UIViewController {
     private func configureTableView() {
         self.tableView.rowHeight = UITableView.automaticDimension
         self.tableView.estimatedRowHeight = 40.0
-        self.tableView.register(ToDoCell.self, forCellReuseIdentifier: ToDoCell.reuseIdentifier)
+        self.tableView.register(UINib(nibName: ToDoCell.nibName, bundle: nil), forCellReuseIdentifier: ToDoCell.reuseIdentifier)
     }
 }
 
@@ -57,10 +53,11 @@ extension ToDoListViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let itemViewModel = self.listViewModel?.item(at: indexPath.row) else { return UITableViewCell() }
-        let toDoCell = self.tableView.dequeueReusableCell(withIdentifier: ToDoCell.reuseIdentifier, for: indexPath)
-        toDoCell.textLabel?.text = itemViewModel.title
-        toDoCell.detailTextLabel?.text = itemViewModel.description
+        guard let itemViewModel = self.listViewModel?.item(at: indexPath.row),
+              let toDoCell = self.tableView.dequeueReusableCell(withIdentifier: ToDoCell.reuseIdentifier, for: indexPath) as? ToDoCell
+              else { return UITableViewCell() }
+        toDoCell.viewDelegate = self
+        toDoCell.configure(with: itemViewModel)
         return toDoCell
     }
 }
@@ -73,6 +70,21 @@ extension ToDoListViewController: ToDoListViewDelegate {
     
     func displayError(error: Error) {
         // Handle error here
+    }
+}
+
+extension ToDoListViewController: UISearchBarDelegate {
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        self.listViewModel?.fetch(with: searchText)
+    }
+}
+
+extension ToDoListViewController: ToDoCellViewDelegate {
+    
+    func didSelectCell(_ cell: ToDoCell, with selection: Bool) {
+        guard let row = self.tableView.indexPath(for: cell)?.row else { return }
+        self.listViewModel?.updateSelection(selection, at: row)
     }
 }
 

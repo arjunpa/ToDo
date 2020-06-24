@@ -9,7 +9,12 @@
 import Foundation
 
 protocol ToDoCreateViewModelInterface {
-    func addItem(_ item: ToDoViewModel, completion: @escaping (Result<Void, Error>) -> ())
+    func addItem(_ item: ToDoItem, completion: @escaping (Result<Void, Error>) -> ())
+}
+
+struct ToDoItem {
+    let title: String?
+    let description: String?
 }
 
 class ToDoCreateViewModel: ToDoCreateViewModelInterface {
@@ -20,7 +25,7 @@ class ToDoCreateViewModel: ToDoCreateViewModelInterface {
         self.repository = repository
     }
     
-    func addItem(_ item: ToDoViewModel, completion: @escaping (Result<Void, Error>) -> ()) {
+    func addItem(_ item: ToDoItem, completion: @escaping (Result<Void, Error>) -> ()) {
         guard let title = item.title, let description = item.description else { return }
         self.repository.addItem(with: title, description: description) { result in
             switch result {

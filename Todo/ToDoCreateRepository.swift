@@ -24,6 +24,7 @@ class ToDoCreateRepository {
                 toDo.toDoDescription = description
                 toDo.uuid = UUID().uuidString
                 toDo.dateTime = Date()
+                toDo.completed = false
                 do {
                     try self.repository.save()
                     completion(.success(()))
