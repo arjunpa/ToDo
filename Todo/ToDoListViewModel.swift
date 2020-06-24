@@ -81,7 +81,8 @@ extension ToDoListViewModel: ToDoListViewInterface {
         if self.fetchResultsController == nil {
             let fetchRequest: NSFetchRequest<ToDo> = ToDo.fetchRequest()
             fetchRequest.predicate = predicate
-            fetchRequest.sortDescriptors = [NSSortDescriptor(key: "dateTime", ascending: false)]
+            fetchRequest.sortDescriptors = [NSSortDescriptor(key: "completed", ascending: true),
+                                            NSSortDescriptor(key: "dateTime", ascending: false)]
             self.fetchResultsController = NSFetchedResultsController(fetchRequest: fetchRequest,
                                                                      managedObjectContext: repository.contextStore.viewContext,
                                                                      sectionNameKeyPath: nil,
