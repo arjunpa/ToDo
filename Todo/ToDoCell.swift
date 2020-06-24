@@ -54,6 +54,7 @@ class ToDoCell: UITableViewCell {
         }
         set {
             self.checkMarkButton.isSelected = newValue
+            self.updateBackgroundColor()
         }
     }
     
@@ -61,6 +62,10 @@ class ToDoCell: UITableViewCell {
         self.titleText = viewModel.title
         self.descriptionText = viewModel.description
         self.isCheckBoxSelected = viewModel.completed
+    }
+    
+    private func updateBackgroundColor() {
+        self.backgroundColor = self.isCheckBoxSelected ? .lightGray : .white
     }
     
     @IBAction private func checkboxSelected() {
