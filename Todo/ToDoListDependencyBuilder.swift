@@ -20,3 +20,13 @@ class ToDoListDependencyBuilder {
         return listViewController
     }
 }
+
+class ToDoCreateDependencyBuilder {
+    
+    static func buildDependencies() -> ToDoCreateViewController {
+        let todoCreateViewController: ToDoCreateViewController = UIStoryboard(storyboardName: .main).instantiateViewController()
+        let repository = ToDoCreateRepository(coreDataRepository: CoreDataRepository<ToDo>(contextStore: CoreDataContext.shared))
+        todoCreateViewController.viewModel = ToDoCreateViewModel(repository: repository)
+        return todoCreateViewController
+    }
+}

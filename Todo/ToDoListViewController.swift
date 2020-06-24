@@ -40,10 +40,7 @@ class ToDoListViewController: UIViewController {
     }
     
     @objc private func addItem() {
-        let todoCreateViewController: ToDoCreateViewController = UIStoryboard(storyboardName: .main).instantiateViewController()
-        let repository = ToDoCreateRepository(coreDataRepository: CoreDataRepository<ToDo>(contextStore: CoreDataContext.shared))
-        todoCreateViewController.viewModel = ToDoCreateViewModel(repository: repository)
-        self.present(todoCreateViewController, animated: true, completion: nil)
+        self.present(ToDoCreateDependencyBuilder.buildDependencies(), animated: true, completion: nil)
     }
     
     private func configureTableView() {
