@@ -73,9 +73,14 @@ final class ToDoCreateViewModel: ToDoCreateViewModelInterface {
     }
     
     private func add(completion: @escaping (Result<Void, Error>) -> ()) {
-        guard let title = self.title, let description = self.description else {
-            self.viewDelegate?.displayError(error: DisplayError.general)
-            return
+        let characterSet = CharacterSet.whitespacesAndNewlines
+        guard let title = self.title?.trimmingCharacters(in: characterSet),
+              let description = self.description?.trimmingCharacters(in: characterSet),
+              !title.isEmpty,
+              !description.isEmpty
+              else {
+                self.viewDelegate?.displayError(error: DisplayError.validation)
+                return
         }
         self.repository.addItem(with: title, description: description, imagePath: self.imageRelativePath) { result in
             switch result {

@@ -11,10 +11,11 @@ import Foundation
 enum DisplayError: Error {
     
     case general
+    case validation
     
     var title: String {
         switch self {
-        case .general:
+        case .general, .validation:
             return "Error"
         }
     }
@@ -23,6 +24,8 @@ enum DisplayError: Error {
         switch self {
         case .general:
             return "Something went wrong."
+        case .validation:
+            return "Validation failure. Please make sure mandatory fields are filled."
         }
     }
 }
