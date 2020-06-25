@@ -21,6 +21,7 @@ class ToDoCell: UITableViewCell {
     
     @IBOutlet private weak var titleTextLabel: UILabel!
     @IBOutlet private weak var descriptionTextLabel: UILabel!
+    @IBOutlet private weak var toDoImageView: UIImageView!
     @IBOutlet private weak var checkMarkButton: UIButton! {
         didSet {
             self.checkMarkButton.setImage(UIImage(named: Constants.checkBoxSelectedImage), for: .selected)
@@ -58,9 +59,17 @@ class ToDoCell: UITableViewCell {
         }
     }
     
+    var imagePath: String? {
+        didSet {
+            guard let imagePath = self.imagePath else { return }
+            self.toDoImageView.image = UIImage(contentsOfFile: imagePath)
+        }
+    }
+    
     func configure(with viewModel: ToDoViewModel) {
         self.titleText = viewModel.title
         self.descriptionText = viewModel.description
+        self.imagePath = viewModel.imagePath
         self.isCheckBoxSelected = viewModel.completed
     }
     

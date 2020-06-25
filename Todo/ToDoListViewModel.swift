@@ -24,12 +24,14 @@ protocol ToDoListViewDelegate: class {
 class ToDoListViewModel: NSObject {
     
     private let repository: CoreDataRepository<ToDo>
+    private let directoryPathGenerator: DirectoryPathGenerator
     private var fetchResultsController: NSFetchedResultsController<ToDo>?
     
     weak var viewDelegate: ToDoListViewDelegate?
     
-    init(repository: CoreDataRepository<ToDo>) {
+    init(repository: CoreDataRepository<ToDo>, directoryPathGenerator: DirectoryPathGenerator) {
         self.repository = repository
+        self.directoryPathGenerator = directoryPathGenerator
         super.init()
     }
 }
@@ -42,8 +44,13 @@ extension ToDoListViewModel: ToDoListViewInterface {
     
     func item(at index: Int) -> ToDoViewModel? {
         guard let toDoManagedObject = self.fetchResultsController?.object(at: IndexPath(row: index, section: 0)) else { return nil }
+        var path: String? = nil
+        if  let imagePath = toDoManagedObject.imagePath {
+            path = self.directoryPathGenerator.buildPath(for: imagePath)
+        }
         return ToDoViewModel(title: toDoManagedObject.toDoTitle,
                              description: toDoManagedObject.toDoDescription,
+                             imagePath: path,
                              uuid: toDoManagedObject.uuid,
                              completed: toDoManagedObject.completed)
     }

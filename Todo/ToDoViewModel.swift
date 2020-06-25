@@ -12,12 +12,14 @@ class ToDoViewModel {
     
     let title: String?
     let description: String?
+    let imagePath: String?
     let uuid: String?
     let completed: Bool
     
-    init(title: String?, description: String?, uuid: String, completed: Bool) {
+    init(title: String?, description: String?, imagePath: String?, uuid: String, completed: Bool) {
         self.title = title
         self.description = description
+        self.imagePath = imagePath
         self.uuid = uuid
         self.completed = completed
     }

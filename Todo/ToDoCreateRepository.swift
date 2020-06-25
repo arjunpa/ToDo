@@ -16,7 +16,7 @@ class ToDoCreateRepository {
         self.repository = coreDataRepository
     }
     
-    func addItem(with title: String, description: String, completion: @escaping (Result<Void, Error>) -> Void) {
+    func addItem(with title: String, description: String, imagePath: String?, completion: @escaping (Result<Void, Error>) -> Void) {
         self.repository.insert { result in
             switch result {
             case .success(let toDo):
@@ -24,6 +24,7 @@ class ToDoCreateRepository {
                 toDo.toDoDescription = description
                 toDo.uuid = UUID().uuidString
                 toDo.dateTime = Date()
+                toDo.imagePath = imagePath
                 toDo.completed = false
                 do {
                     try self.repository.save()

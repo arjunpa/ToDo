@@ -3,11 +3,12 @@
     <entity name="ToDo" representedClassName="ToDo" syncable="YES" codeGenerationType="class">
         <attribute name="completed" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="dateTime" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="imagePath" optional="YES" attributeType="String"/>
         <attribute name="toDoDescription" optional="YES" attributeType="String"/>
         <attribute name="toDoTitle" optional="YES" attributeType="String"/>
         <attribute name="uuid" attributeType="String" storedInTruthFile="YES"/>
     </entity>
     <elements>
-        <element name="ToDo" positionX="-63" positionY="-18" width="128" height="118"/>
+        <element name="ToDo" positionX="-63" positionY="-18" width="128" height="133"/>
     </elements>
 </model>

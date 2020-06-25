@@ -13,7 +13,7 @@ class ToDoListDependencyBuilder {
     
     static func buildDependencies() -> ToDoListViewController {
         let repository = CoreDataRepository<ToDo>(contextStore: CoreDataContext.shared)
-        let viewModel = ToDoListViewModel(repository: repository)
+        let viewModel = ToDoListViewModel(repository: repository, directoryPathGenerator: DirectoryPathGenerator(directory: .document))
         let listViewController: ToDoListViewController = UIStoryboard(storyboardName: .main).instantiateViewController()
         listViewController.listViewModel = viewModel
         viewModel.viewDelegate = listViewController
@@ -26,7 +26,11 @@ class ToDoCreateDependencyBuilder {
     static func buildDependencies() -> ToDoCreateViewController {
         let todoCreateViewController: ToDoCreateViewController = UIStoryboard(storyboardName: .main).instantiateViewController()
         let repository = ToDoCreateRepository(coreDataRepository: CoreDataRepository<ToDo>(contextStore: CoreDataContext.shared))
-        todoCreateViewController.viewModel = ToDoCreateViewModel(repository: repository)
+        let imageHandler = ImagePickHandler.init(pathGenerator: DirectoryPathGenerator(directory: .document), quality: 0.8)
+        let viewModel = ToDoCreateViewModel(repository: repository,
+                                            imageHandler: imageHandler)
+        todoCreateViewController.viewModel = viewModel
+        viewModel.viewDelegate = todoCreateViewController
         return todoCreateViewController
     }
 }
