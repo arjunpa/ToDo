@@ -11,6 +11,6 @@ import Foundation
 import CoreData
 
 @objc(ToDo)
-public class ToDo: NSManagedObject {
+final class ToDo: NSManagedObject {
 
 }

@@ -9,7 +9,7 @@
 import Foundation
 import CoreData
 
-class CoreDataRepository<T: NSManagedObject>: LocalRepository {
+final class CoreDataRepository<T: NSManagedObject>: LocalRepository {
     
     enum ReadyState {
         case ready

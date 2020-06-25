@@ -8,7 +8,7 @@
 
 import Foundation
 
-class DirectoryPathGenerator {
+final class DirectoryPathGenerator {
     
     enum Directory {
         case document
@@ -16,6 +16,8 @@ class DirectoryPathGenerator {
     }
     
     private var directoryURL: URL
+    
+    private let pathComponent = "/"
     
     init(directory: Directory) {
         switch directory {
@@ -32,8 +34,8 @@ class DirectoryPathGenerator {
     
     func buildURL(for relativePath: String) -> URL {
         var relativePath = relativePath
-        if relativePath.hasPrefix("/") {
-            relativePath = String(relativePath.dropFirst(1))
+        if relativePath.hasPrefix(self.pathComponent) {
+            relativePath = String(relativePath.dropFirst(self.pathComponent.count))
         }
         return self.directoryURL.appendingPathComponent(relativePath)
     }

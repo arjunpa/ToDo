@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ToDoListViewController: DismissOnTapViewController {
+final class ToDoListViewController: DismissOnTapViewController {
     
     var listViewModel: ToDoListViewInterface?
     

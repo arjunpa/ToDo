@@ -8,7 +8,7 @@
 
 import Foundation
 
-class ToDoCreateRepository {
+final class ToDoCreateRepository {
     
     private let repository: CoreDataRepository<ToDo>
     

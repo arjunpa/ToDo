@@ -25,7 +25,7 @@ struct ToDoItem {
     let description: String?
 }
 
-class ToDoCreateViewModel: ToDoCreateViewModelInterface {
+final class ToDoCreateViewModel: ToDoCreateViewModelInterface {
     
     var title: String?
     

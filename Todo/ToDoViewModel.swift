@@ -8,7 +8,7 @@
 
 import Foundation
 
-class ToDoViewModel {
+final class ToDoViewModel {
     
     let title: String?
     let description: String?

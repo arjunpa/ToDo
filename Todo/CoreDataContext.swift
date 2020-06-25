@@ -9,7 +9,7 @@
 import Foundation
 import CoreData
 
-class CoreDataContext {
+final class CoreDataContext {
     
     static let shared: CoreDataContext = {
         let context = CoreDataContext(persistentContainer: NSPersistentContainer(name: "Todo"), store: .onDiskAndMemory)

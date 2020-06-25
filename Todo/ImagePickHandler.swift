@@ -8,7 +8,9 @@
 
 import UIKit
 
-class ImagePickHandler {
+final class ImagePickHandler {
+    
+    let quality: CGFloat
     
     private enum Errors: Error {
         case noDirectoryFound
@@ -19,8 +21,6 @@ class ImagePickHandler {
     private var imagePath: String {
         return "/" + self.imageDirectoryName + "/" + UUID().uuidString
     }
-    
-    let quality: CGFloat
     
     private let pathGenerator: DirectoryPathGenerator
     

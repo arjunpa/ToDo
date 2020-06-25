@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ToDoCreateViewController: DismissOnTapViewController {
+final class ToDoCreateViewController: DismissOnTapViewController {
 
     var viewModel: ToDoCreateViewModelInterface?
     

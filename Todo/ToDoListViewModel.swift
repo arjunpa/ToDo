@@ -21,13 +21,13 @@ protocol ToDoListViewDelegate: class {
     func displayError(error: Error)
 }
 
-class ToDoListViewModel: NSObject {
+final class ToDoListViewModel: NSObject {
+    
+    weak var viewDelegate: ToDoListViewDelegate?
     
     private let repository: CoreDataRepository<ToDo>
     private let directoryPathGenerator: DirectoryPathGenerator
     private var fetchResultsController: NSFetchedResultsController<ToDo>?
-    
-    weak var viewDelegate: ToDoListViewDelegate?
     
     init(repository: CoreDataRepository<ToDo>, directoryPathGenerator: DirectoryPathGenerator) {
         self.repository = repository

@@ -12,7 +12,47 @@ protocol ToDoCellViewDelegate: class {
     func didSelectCell(_ cell: ToDoCell, with selection: Bool)
 }
 
-class ToDoCell: UITableViewCell {
+final class ToDoCell: UITableViewCell {
+    
+    weak var viewDelegate: ToDoCellViewDelegate?
+
+     var titleText: String? {
+         get {
+             return self.titleTextLabel.text
+         }
+         set {
+             self.titleTextLabel.text = newValue
+         }
+     }
+     
+     var descriptionText: String? {
+         get {
+             return self.descriptionTextLabel.text
+         }
+         set {
+             self.descriptionTextLabel.text = newValue
+         }
+     }
+     
+     var isCheckBoxSelected: Bool {
+         get {
+             return self.checkMarkButton.isSelected
+         }
+         set {
+             self.checkMarkButton.isSelected = newValue
+             self.updateBackgroundColor()
+         }
+     }
+     
+     var imagePath: String? {
+         didSet {
+             guard let imagePath = self.imagePath else {
+                self.toDoImageView.image = nil
+                return
+             }
+             self.toDoImageView.image = UIImage(contentsOfFile: imagePath)
+         }
+     }
     
     private enum Constants {
         static let checkBoxSelectedImage = "checkbox_checked"
@@ -29,41 +69,8 @@ class ToDoCell: UITableViewCell {
         }
     }
     
-    weak var viewDelegate: ToDoCellViewDelegate?
-
-    var titleText: String? {
-        get {
-            return self.titleTextLabel.text
-        }
-        set {
-            self.titleTextLabel.text = newValue
-        }
-    }
-    
-    var descriptionText: String? {
-        get {
-            return self.descriptionTextLabel.text
-        }
-        set {
-            self.descriptionTextLabel.text = newValue
-        }
-    }
-    
-    var isCheckBoxSelected: Bool {
-        get {
-            return self.checkMarkButton.isSelected
-        }
-        set {
-            self.checkMarkButton.isSelected = newValue
-            self.updateBackgroundColor()
-        }
-    }
-    
-    var imagePath: String? {
-        didSet {
-            guard let imagePath = self.imagePath else { return }
-            self.toDoImageView.image = UIImage(contentsOfFile: imagePath)
-        }
+    override func awakeFromNib() {
+        self.selectionStyle = .none
     }
     
     func configure(with viewModel: ToDoViewModel) {
