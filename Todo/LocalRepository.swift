@@ -14,6 +14,8 @@ protocol LocalRepository {
     
     func insert(onCompletion: @escaping (Result<Entity, Error> ) -> ())
     
+    func performUpdates(with object: Entity, updates: @escaping (Entity) -> (), onError: @escaping (Error) -> ())
+    
     func fetch(predicate: NSPredicate?, sortDescriptors: [NSSortDescriptor]?, onCompletion: @escaping (Result<[Entity], Error>) -> ())
     
     func save() throws

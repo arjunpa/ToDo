@@ -70,7 +70,7 @@ extension ToDoListViewModel: ToDoListViewInterface {
     
     func updateSelection(_ selection: Bool, at index: Int) {
         guard let toDo = self.fetchResultsController?.object(at: IndexPath(row: index, section: 0)) else { return }
-        self.repository.performUpdates(with: toDo.objectID, updates: { toDoToBeUpdated in
+        self.repository.performUpdates(with: toDo, updates: { toDoToBeUpdated in
             toDoToBeUpdated.completed = selection
         }) { [weak self] error in
             self?.viewDelegate?.displayError(error: DisplayError.general)

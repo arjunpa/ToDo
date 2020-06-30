@@ -38,7 +38,7 @@ final class ImagePickHandler {
             try self.checkAndCreateDirectoryIfRequired()
             let imagePath = self.imagePath
             let url = self.pathGenerator.buildURL(for: imagePath)
-            try originalImage.jpegData(compressionQuality: 0.8)?.write(to: url)
+            try originalImage.jpegData(compressionQuality: self.quality)?.write(to: url)
             completion(.success(imagePath))
         } catch let error {
             completion(.failure(error))

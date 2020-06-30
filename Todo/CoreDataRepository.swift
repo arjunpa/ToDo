@@ -83,13 +83,15 @@ extension CoreDataRepository {
         }
     }
     
-    func performUpdates(with objectID: NSManagedObjectID, updates: (T) -> (), onError: (Error) -> ()) {
-        guard let toDo = self.contextStore.backgroundContext.object(with: objectID) as? T else { return }
-        updates(toDo)
-        do {
-            try self.save()
-        } catch let error {
-            onError(error)
+      func performUpdates(with object: T, updates: @escaping (T) -> (), onError: @escaping (Error) -> ()) {
+        self.contextStore.onLoad = { [weak self] loadState in
+            guard let toDo = self?.contextStore.backgroundContext.object(with: object.objectID) as? T else { return }
+            updates(toDo)
+            do {
+                try self?.save()
+            } catch let error {
+                onError(error)
+            }
         }
     }
     

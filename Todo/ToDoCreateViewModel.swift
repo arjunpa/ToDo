@@ -37,11 +37,11 @@ final class ToDoCreateViewModel: ToDoCreateViewModelInterface {
     
     private var imageRelativePath: String?
     
-    private let repository: ToDoCreateRepository
+    private let repository: ToDoCreateRepositoryInterface
     
     private let imageHandler: ImagePickHandler
     
-    init(repository: ToDoCreateRepository, imageHandler: ImagePickHandler) {
+    init(repository: ToDoCreateRepositoryInterface, imageHandler: ImagePickHandler) {
         self.repository = repository
         self.imageHandler = imageHandler
     }

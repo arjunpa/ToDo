@@ -25,7 +25,7 @@ class ToDoCreateDependencyBuilder {
     
     static func buildDependencies() -> ToDoCreateViewController {
         let todoCreateViewController: ToDoCreateViewController = UIStoryboard(storyboardName: .main).instantiateViewController()
-        let repository = ToDoCreateRepository(coreDataRepository: CoreDataRepository<ToDo>(contextStore: CoreDataContext.shared))
+        let repository = ToDoCreateRepository(repository: CoreDataRepository<ToDo>(contextStore: CoreDataContext.shared))
         let imageHandler = ImagePickHandler.init(pathGenerator: DirectoryPathGenerator(directory: .document), quality: 0.8)
         let viewModel = ToDoCreateViewModel(repository: repository,
                                             imageHandler: imageHandler)

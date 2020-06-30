@@ -8,12 +8,16 @@
 
 import Foundation
 
-final class ToDoCreateRepository {
+protocol ToDoCreateRepositoryInterface {
+    func addItem(with title: String, description: String, imagePath: String?, completion: @escaping (Result<Void, Error>) -> Void)
+}
+
+final class ToDoCreateRepository<T: LocalRepository>: ToDoCreateRepositoryInterface where T.Entity == ToDo {
     
-    private let repository: CoreDataRepository<ToDo>
+    private let repository: T
     
-    init(coreDataRepository: CoreDataRepository<ToDo>) {
-        self.repository = coreDataRepository
+    init(repository: T) {
+        self.repository = repository
     }
     
     func addItem(with title: String, description: String, imagePath: String?, completion: @escaping (Result<Void, Error>) -> Void) {
